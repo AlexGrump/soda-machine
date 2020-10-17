@@ -5,6 +5,8 @@ import SignalError from "@/assets/sounds/signal_error.wav";
 import SignalDone from "@/assets/sounds/signal_done.wav";
 import IceSound from "@/assets/sounds/ice.wav";
 import PourWaterSound from "@/assets/sounds/pour_water.wav";
+import PumpSound from "@/assets/sounds/process.wav";
+import CoinSound from "@/assets/sounds/coin.wav";
 
 const NOT_ENOUGH_MONEY = "Not enough money";
 
@@ -30,6 +32,12 @@ const MechanicActions = {
   },
   pour() {
     Sound.play(PourWaterSound);
+  },
+  pump() {
+    Sound.play(PumpSound);
+  },
+  coin() {
+    Sound.play(CoinSound);
   },
 };
 
@@ -148,9 +156,12 @@ export default {
         await wait(3200);
       }
 
+      MechanicActions.pump();
+      await wait(600);
+
       commit("fillCup", true);
       MechanicActions.pour();
-      await wait(6000);
+      await wait(5700);
 
       commit("setProgress", false);
       MachineSpeaker.done();
@@ -171,7 +182,9 @@ export default {
         return;
       }
 
+      MechanicActions.coin();
       commit("reduceBalance", getters.drink.cost);
+
       MachineSpeaker.ok();
       dispatch("pourDrink");
     },
