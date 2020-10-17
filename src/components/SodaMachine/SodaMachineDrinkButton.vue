@@ -1,11 +1,11 @@
 <template lang="pug">
-  SodaMachineButton.button(
-    @click="selectDrink(index)"
-    :class="{ active: drink.active }"
-    :style="{ '--brand': drink.brandColor }"
-  ) 
-    .label {{ drink.name }}
-    .price {{ drink.price | price }}
+SodaMachineButton.button(
+  @click="selectDrink(drink.id)",
+  :class="{ active: drink.active }",
+  :style="{ '--brand': drink.brandColor }"
+) 
+  .label {{ drink.name }}
+  .price {{ drink.cost | currency }}
 </template>
 
 <script>
@@ -14,69 +14,75 @@ import { mapActions } from "vuex";
 
 export default {
   components: {
-    SodaMachineButton,
+    SodaMachineButton
   },
 
   props: {
     drink: {
       type: Object,
-      required: true,
-    },
-    index: {
-      type: Number,
-      required: true,
-    },
-  },
-
-  filters: {
-    price(value) {
-      return `$${value.toFixed(2)}`;
-    },
+      required: true
+    }
   },
 
   methods: {
-    ...mapActions("sodaMachine", ["selectDrink"]),
-  },
+    ...mapActions("sodaMachine", ["selectDrink"])
+  }
 };
 </script>
 
 <style lang="scss" scoped>
+@keyframes pulse {
+  from {
+    filter: contrast(100%) brightness(100%);
+    box-shadow: 0 0 0 transparent;
+    text-shadow: 0 0 0 transparent;
+  }
+  to {
+    filter: contrast(150%) brightness(140%);
+    box-shadow: 0 0 var(--ligth) var(--brand);
+    text-shadow: 0 0 30px white;
+  }
+}
+
 .button {
+  --ligth: 40px;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   justify-content: center;
   font-family: inherit;
-  width: 300px;
-  height: 80px;
+  width: 100%;
   cursor: pointer;
   background: var(--brand);
   color: white;
-  padding: 0 30px;
+  padding: 10px 15px;
   transition: all 130ms;
-  border-radius: 6px;
   user-select: none;
+  font-size: 8px;
+  line-height: 1;
 
   & + & {
     margin-top: 10px;
   }
 
   &.active {
-    filter: contrast(150%) brightness(140%);
-    box-shadow: 0 0 40px var(--brand);
-    text-shadow: 0 0 30px white;
+    animation: 1s pulse ease-in-out infinite alternate;
+  }
+
+  &:active {
+    transform: translateY(1px);
   }
 
   &.active:active {
-    box-shadow: 0 0 10px var(--brand);
+    --ligth: 20px;
   }
 
   & .label {
-    font-size: 1.2rem;
+    font-size: 1.2em;
   }
 
   & .price {
-    margin-top: 10px;
+    margin-top: 5px;
   }
 }
 </style>

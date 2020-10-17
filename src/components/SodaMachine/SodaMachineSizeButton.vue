@@ -1,8 +1,8 @@
 <template lang="pug">
-  SodaMachineButton(
-    @click="selectSize(index)"
-    :class="{ active: size.active }"
-  ) {{ size.name }}
+SodaMachineButton(
+  @click="selectSize(size.id)",
+  :class="{ active: size.active }"
+) {{ size.name }}
 </template>
 
 <script>
@@ -11,22 +11,18 @@ import { mapActions } from "vuex";
 
 export default {
   components: {
-    SodaMachineButton,
+    SodaMachineButton
   },
 
   props: {
     size: {
       type: Object,
-      required: true,
-    },
-    index: {
-      type: Number,
-      required: true,
-    },
+      required: true
+    }
   },
 
   methods: {
-    ...mapActions("sodaMachine", ["selectSize"]),
-  },
+    ...mapActions("sodaMachine", ["selectSize"])
+  }
 };
 </script>

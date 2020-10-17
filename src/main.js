@@ -1,8 +1,15 @@
 import Vue from "vue";
 import App from "./App.vue";
+
+// Vue modules
 import router from "./router";
 import store from "./store";
-import "./styles/root.scss";
+
+// Filters
+import "@/modules/currencyFilter";
+
+// Styles
+import "@/styles/root.scss";
 
 Vue.config.productionTip = false;
 
