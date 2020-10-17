@@ -58,7 +58,7 @@ export default {
   right: -10px;
   background: #87a1c2;
   mix-blend-mode: overlay;
-  filter: blur(5px);
+  filter: blur(40px);
 
   &.error {
     background: #ff002b;
