@@ -3,8 +3,8 @@
   .ender
   .floor
   .window
-  SodaMachine.machine
-  Balance
+  soda-machine.machine
+  balance
 </template>
 
 <script>
@@ -22,6 +22,7 @@ export default {
 
 <style lang="scss" scoped>
 .hall-room {
+  background: #242234;
   position: relative;
   height: 100vh;
   overflow: hidden;

@@ -5,11 +5,13 @@ import SignalError from "@/assets/sounds/signal_error.wav";
 import SignalDone from "@/assets/sounds/signal_done.wav";
 import IceSound from "@/assets/sounds/ice.wav";
 import PourWaterSound from "@/assets/sounds/pour_water.wav";
+import PumpSound from "@/assets/sounds/process.wav";
+import CoinSound from "@/assets/sounds/coin.wav";
 
 const NOT_ENOUGH_MONEY = "Not enough money";
 
-const wait = (timer) => {
-  return new Promise((r) => setTimeout(r, timer));
+const wait = timer => {
+  return new Promise(r => setTimeout(r, timer));
 };
 
 const MachineSpeaker = {
@@ -21,7 +23,7 @@ const MachineSpeaker = {
   },
   done() {
     Sound.play(SignalDone);
-  },
+  }
 };
 
 const MechanicActions = {
@@ -31,6 +33,12 @@ const MechanicActions = {
   pour() {
     Sound.play(PourWaterSound);
   },
+  pump() {
+    Sound.play(PumpSound);
+  },
+  coin() {
+    Sound.play(CoinSound);
+  }
 };
 
 export default {
@@ -45,7 +53,7 @@ export default {
         drinkColor: "#eee",
         drinkOpacity: 0.1,
         stock: 7000,
-        cost: 1,
+        cost: 1
       },
       {
         id: 0,
@@ -54,7 +62,7 @@ export default {
         drinkColor: "#381806",
         drinkOpacity: 0.95,
         stock: 260,
-        cost: 5.99,
+        cost: 5.99
       },
       {
         id: 1,
@@ -63,7 +71,7 @@ export default {
         drinkColor: "#FF8300",
         drinkOpacity: 0.75,
         stock: 260,
-        cost: 5.99,
+        cost: 5.99
       },
       {
         id: 2,
@@ -72,7 +80,7 @@ export default {
         drinkColor: "#eeeeee",
         drinkOpacity: 0.25,
         stock: 20,
-        cost: 6.99,
+        cost: 6.99
       },
       {
         id: 3,
@@ -81,7 +89,7 @@ export default {
         drinkColor: "#381806",
         drinkOpacity: 0.95,
         stock: 7000,
-        cost: 5.99,
+        cost: 5.99
       },
       {
         id: 4,
@@ -90,7 +98,7 @@ export default {
         drinkColor: "#255908",
         drinkOpacity: 0.9,
         stock: 7000,
-        cost: 3.99,
+        cost: 3.99
       },
       {
         id: 5,
@@ -99,7 +107,7 @@ export default {
         drinkColor: "tomato",
         drinkOpacity: 1,
         stock: 7000,
-        cost: 3.99,
+        cost: 3.99
       },
       {
         id: 7,
@@ -108,25 +116,25 @@ export default {
         drinkColor: "#00ff00",
         drinkOpacity: 1,
         stock: 7000,
-        cost: 0.01,
-      },
+        cost: 0.01
+      }
     ],
     sizes: [
       {
         id: 1,
         name: "sm",
-        size: 250,
+        size: 250
       },
       {
         id: 2,
         name: "md",
-        size: 350,
+        size: 350
       },
       {
         id: 3,
         name: "lg",
-        size: 450,
-      },
+        size: 450
+      }
     ],
     activeSizeIndex: null,
     activeDrinkIndex: null,
@@ -135,7 +143,7 @@ export default {
     balance: 20.65,
     error: null,
     inProgress: false,
-    cupIsFull: false,
+    cupIsFull: false
   },
 
   actions: {
@@ -148,9 +156,12 @@ export default {
         await wait(3200);
       }
 
+      MechanicActions.pump();
+      await wait(600);
+
       commit("fillCup", true);
       MechanicActions.pour();
-      await wait(6000);
+      await wait(5700);
 
       commit("setProgress", false);
       MachineSpeaker.done();
@@ -161,7 +172,7 @@ export default {
         return;
       }
 
-      const index = state.drinks.findIndex((drink) => drink.id === id);
+      const index = state.drinks.findIndex(drink => drink.id === id);
       commit("setDrinkIndex", index);
       commit("setError", null);
 
@@ -171,13 +182,15 @@ export default {
         return;
       }
 
+      MechanicActions.coin();
       commit("reduceBalance", getters.drink.cost);
+
       MachineSpeaker.ok();
       dispatch("pourDrink");
     },
 
     selectSize({ commit, state }, id) {
-      const index = state.sizes.findIndex((size) => size.id === id);
+      const index = state.sizes.findIndex(size => size.id === id);
       commit("setSizeIndex", index);
       MachineSpeaker.ok();
     },
@@ -192,7 +205,7 @@ export default {
       }
       commit("fillCup", false);
       commit("setDrinkIndex", null);
-    },
+    }
   },
 
   mutations: {
@@ -222,7 +235,7 @@ export default {
 
     fillCup(state, value) {
       state.cupIsFull = value;
-    },
+    }
   },
 
   getters: {
@@ -230,7 +243,7 @@ export default {
       const { activeDrinkIndex, drinks } = state;
       return drinks.map((drink, index) => ({
         ...drink,
-        active: index === activeDrinkIndex,
+        active: index === activeDrinkIndex
       }));
     },
 
@@ -238,7 +251,7 @@ export default {
       const { activeSizeIndex, sizes } = state;
       return sizes.map((size, index) => ({
         ...size,
-        active: index === activeSizeIndex,
+        active: index === activeSizeIndex
       }));
     },
 
@@ -258,6 +271,6 @@ export default {
 
     isDone(state) {
       return !state.inProgress && state.cupIsFull;
-    },
-  },
+    }
+  }
 };
