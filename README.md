@@ -1,24 +1,7 @@
-# soda-machine
+# Soda Machine
 
-## Project setup
-```
-yarn install
-```
+Simple interactive application with vending machine based on Vue.js with Vuex and Vue Router (yep, rly with router).
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+You can visit [demo page](https://alexgrump.github.io/soda-machine/).
 
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Just for fun.
