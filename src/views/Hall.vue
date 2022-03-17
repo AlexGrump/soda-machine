@@ -24,7 +24,7 @@ export default {
 .hall-room {
   background: #242234;
   position: relative;
-  height: 100vh;
+  height: 100%;
   overflow: hidden;
 }
 
